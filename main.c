@@ -1,58 +1,77 @@
-//printf and scanf statements
-#include <stdio.h>
+#include "main.h"
 
-//to handle errors
-#include <errno.h>
+#include <stdio.h> //printf and scanf statements
+#include <errno.h> //to handle errors
+#include <unistd.h> //sleep() functionality
+//#include <windows.h> //for windows users, they might need this library instead of `unistd.h`
+#include <stdbool.h> //boolean functionality
+#include <string.h> //string library
+
+bool check_victor(){
+	if(champ2.hp<=0){
+		printf("\n%s is victorious with %d hp remaining! To the victor the spoils!\n",champ1.name,champ1.hp);
+		return true;
+	}
+	else if(champ1.hp<=0){
+		printf("\n%s is victorious with %d hp remaining! To the victor the spoils!\n",champ2.name,champ2.hp);
+		return true;
+	}
+	else
+		return false;
+}
 
 int main(){
-	char name1[100],name2[100];
-	int hp1,hp2,atk1,atk2;
 
-	printf("this is a fighting simulator. in this simulator, there will be two champions fighting to the death. you will choose the name of these champions, their health values, and their attack damages. the first champion will attack first, then the second champion will attack first, then the cycle repeats. the champion whose health points do not drop to zero before the other champion does is declared the victor.\n\n");
+	printf("This is a fighting simulator. In this simulator, there will be two champions fighting to the death. You will choose the name of these champions, their health values, their damage type, and their power scaling. The first champion will attack first, then the second champion will attack, then the cycle will repeat. The champion whose health points do not drop to zero before the other champion does is declared the victor.\n\n");
 
-	printf("who will be your first champion? (max 100 characters): ");
-	scanf("%s",name1);
+	champ_t champ1, champ2;
+	char*dmg_type;
+
+	printf("Who will be your first champion? (max 100 characters): ");
+	scanf("%s",champ1.name);
 	printf("\n");
 
-	printf("who will be your second champion? (max 100 characters): ");
-	scanf("%s",name2);
+	printf("Who will be your second champion? (max 100 characters): ");
+	scanf("%s",champ2.name);
 	printf("\n");
 
-	printf("how many health points shall %s have? (enter an integer): ",name1);
-	scanf("%d",&hp1);
+	printf("How many health points shall %s have? (enter an integer): ",champ1.name);
+	scanf("%d",&champ1.hp);
 	printf("\n");
 
-	printf("how many health points shall %s have? (enter an integer): ",name2);
-	scanf("%d",&hp2);
+	printf("How many health points shall %s have? (enter an integer): ",champ2.name);
+	scanf("%d",&champ2.hp);
 	printf("\n");
 
-	printf("what should %s's attack damage be? (also enter an integer): ",name1);
-	scanf("%d",&atk1);
+	printf("Is %s an AD (attack damage) or an AP (ability power) champion? (enter `AD` or `AP`): ",champ1.name);
+	scanf("%s",champ1.dmg_type);
+
+	printf("Is %s an AD (attack damage) or an AP (ability power) champion? (enter `AD` or `AP`): ",champ2.name);
+	scanf("%s",champ2.dmg_type);
+
+	printf("How much %s should %s have? (also enter an integer): ",champ1.dmg_type,champ1.name);
+	scanf("%d",&champ1.dmg);
 	printf("\n");
 
-	printf("what should %s's attack damage be? (also enter an integer): ",name2);
-	scanf("%d",&atk2);
+	printf("How much %s should %s have? (also enter an integer): ",champ2.dmg_type,champ2.name);
+	scanf("%d",&champ2.dmg);
 	printf("\n");
 
-	//printf("%s %s %d %d %d %d\n",name1,name2,hp1,hp2,atk1,atk2);
+	printf("The champions are locked in! Let the games begin!\n");
+	printf("FIRST CHALLENGER:\n---\nNAME: %s\nHP: %d\n%s: %d\n---\n\n",champ1.name,champ1.hp,champ1.dmg_type,dmg1);
+	printf("SECOND CHALLENGER:\n---\nNAME: %s\nHP: %d\n%s: %d\n---\n\n",champ2.name,champ2.hp,champ2.dmg_type,dmg2);
 	
-	while(hp1>0&&hp2>0){
-		printf("%s attacked %s for %d damage. %s's hp remaining: %d\n",name1,name2,atk1,name2,hp2);
-		hp2-=atk1;
-		printf("%s attacked %s for %d damage. %s's hp remaining: %d\n",name2,name1,atk2,name1,hp1);
-		hp1-=atk2;
-	}
+	while(champ1.hp>0&&champ2.hp>0){
+		champ2.hp-=dmg1;
+		printf("%s attacked %s for %d damage. %s's HP remaining: %d\n",champ1.name,champ2.name,dmg1,champ2.name,champ2.hp);
+		sleep(1);
+		if(check_victor())
+			return 0;
 
-	if(hp1<=0){
-		printf("\n%s is victorious with %d remaining! to the victor the spoils!\n",name2,hp2);
-		return 0;
-	}
-	else if(hp2<=0){
-		printf("\n%s is victorious with %d remaining! to the victor the spoils!\n",name1,hp1);
-		return 0;
-	}
-	else{
-		perror("error");
-		return 1;
+		champ1.hp-=dmg2;
+		printf("%s attacked %s for %d damage. %s's HP remaining: %d\n",champ2.name,champ1.name,dmg2,champ1.name,champ1.hp);
+		sleep(1);
+		if(check_victor())
+			return 0;
 	}
 }

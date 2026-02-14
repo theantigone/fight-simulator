@@ -2,6 +2,8 @@
 
 goal: i intend to create a fight simulator between two characters that the user can choose the name and HP (health points) for
 
+purpose: to understand C better and to get out of tutorial hell (coding this without any tutorials or guides)
+
 checkpoints:
 - [ ] ask the user to name the two characters via the console
 - [ ] ask the user to give them a value as their health
