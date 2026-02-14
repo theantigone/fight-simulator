@@ -13,16 +13,20 @@ champ_t champ1, champ2;
 char*dmg_type;
 
 bool check_victor(){
+	champ_t victor;
+
 	if(champ2.hp<=0){
-		printf("\n%s is victorious with %d hp remaining! To the victor the spoils!\n",champ1.name,champ1.hp);
-		return true;
+		strcpy(victor.name,champ1.name);
+		victor.hp=champ1.hp;
 	}
 	else if(champ1.hp<=0){
-		printf("\n%s is victorious with %d hp remaining! To the victor the spoils!\n",champ2.name,champ2.hp);
-		return true;
+		strcpy(victor.name,champ2.name);
+		victor.hp=champ2.hp;
 	}
 	else
 		return false;
+	printf("\n%s is victorious, with %d hp remaining! To the victor the spoils!\n",victor.name,victor.hp);
+	return true;
 }
 
 int main(){
@@ -65,6 +69,8 @@ int main(){
 
 	printf("FIRST CHALLENGER:\n---\nNAME: %s\nHP: %d\n%s: %d\n---\n\n",champ1.name,champ1.hp,champ1.dmg_type,champ1.dmg);
 	printf("SECOND CHALLENGER:\n---\nNAME: %s\nHP: %d\n%s: %d\n---\n\n",champ2.name,champ2.hp,champ2.dmg_type,champ2.dmg);
+
+	printf("NOTE: Press `Ctrl + C` to cancel the fight!\n\n");
 	
 	while(champ1.hp>0&&champ2.hp>0){
 		champ2.hp-=champ1.dmg;
