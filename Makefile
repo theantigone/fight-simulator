@@ -1,5 +1,5 @@
 CC=gcc
-SOURCE=main.c
+SOURCE=src/main.c
 TARGET=fight_sim
 
 all: $(SOURCE)
